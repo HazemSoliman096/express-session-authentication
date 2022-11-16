@@ -1,13 +1,21 @@
 const express = require('express');
-const mongoose = require('mongoose');
 const session = require('express-session');
-var passport = require('passport');
-var crypto = require('crypto');
-var routes = require('./routes');
-const connection = require('./config/database');
+const passport = require('passport');
+const crypto = require('crypto');
+const routes = require('./routes');
+const { PrismaSessionStore } = require('@quixo3/prisma-session-store');
+const { PrismaClient } = require('@prisma/client');
 
 // Package documentation - https://www.npmjs.com/package/connect-mongo
-const MongoStore = require('connect-mongo')(session);
+const prisma = new PrismaClient();
+const sessionStore = new PrismaSessionStore(
+  prisma,
+  {
+    checkPeriod: 2 * 60 * 1000,
+    dbRecordIdIsSessionId: true,
+    dbRecordIdFunction: undefined,
+  }
+);
 
 // Need to require the entire Passport config module so app.js knows about it
 require('./config/passport');
@@ -20,7 +28,7 @@ require('./config/passport');
 require('dotenv').config();
 
 // Create the Express application
-var app = express();
+const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
