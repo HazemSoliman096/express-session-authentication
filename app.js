@@ -42,6 +42,7 @@ app.use(express.urlencoded({extended: true}));
  * -------------- PASSPORT AUTHENTICATION ----------------
  */
 
+require('./config/passport');
 app.use(passport.initialize());
 app.use(passport.session());
 
