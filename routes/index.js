@@ -1,6 +1,4 @@
 const router = require('express').Router();
-const passport = require('passport');
-const passwordUtils = require('../lib/passwordUtils');
 
 /**
  * -------------- POST ROUTES ----------------
